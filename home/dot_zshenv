@@ -1,0 +1,14 @@
+# Only zsh file in $HOME: points zsh to ~/.config/zsh.
+# ~/.config/zsh/.zshenv links here, for shells that inherit ZDOTDIR (tmux, subshells).
+export XDG_CONFIG_HOME="$HOME/.config"
+export XDG_CACHE_HOME="$HOME/.cache"
+export XDG_STATE_HOME="$HOME/.local/state"
+export ZDOTDIR="$XDG_CONFIG_HOME/zsh"
+
+# Ubuntu: skip the compinit in /etc/zsh/zshrc, ours runs in .zshrc
+skip_global_compinit=1
+
+[[ -f "$HOME/.cargo/env" ]] && . "$HOME/.cargo/env"
+
+export EDITOR=nano
+export VISUAL=nano

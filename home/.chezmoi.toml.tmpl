@@ -1,0 +1,5 @@
+# Keep the source in the cloned repo instead of ~/.local/share/chezmoi
+sourceDir = {{ .chezmoi.workingTree | quote }}
+
+[diff]
+  exclude = ["scripts"]

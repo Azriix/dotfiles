@@ -1,0 +1,14 @@
+# Old locations, replaced by ~/.config/<tool>/ (~/.gitconfig would override ~/.config/git/config)
+.zshrc
+.zsh
+.zcompdump*
+.gitconfig
+.tmux.conf
+
+# oh-my-zsh and old zsh config leftovers
+.oh-my-zsh
+.zsh_config
+.zshrc.pre-oh-my-zsh
+.shell.pre-oh-my-zsh
+.zshrc.bak-cmdlog
+.config/zsh/.zcompdump

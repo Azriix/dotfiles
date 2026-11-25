@@ -1,0 +1,6 @@
+{{ if eq .chezmoi.os "linux" -}}
+#!/usr/bin/env bash
+# Refresh the font cache when the Nerd Font external changes.
+# external: {{ include ".chezmoiexternal.toml.tmpl" | sha256sum }}
+fc-cache -f "$HOME/.local/share/fonts" >/dev/null
+{{ end -}}

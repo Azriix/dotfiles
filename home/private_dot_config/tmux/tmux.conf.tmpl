@@ -1,0 +1,49 @@
+# zsh as a plain interactive shell, not a login shell
+set -g default-command {{ lookPath "zsh" | default "/bin/zsh" }}
+
+# Prefix: Ctrl+a
+unbind C-b
+set -g prefix C-a
+bind C-a send-prefix
+
+# Split with | and -
+bind | split-window -h
+bind - split-window -v
+unbind '"'
+unbind %
+
+bind r source-file ~/.config/tmux/tmux.conf \; display "tmux.conf reloaded"
+
+# Alt+arrows to switch panes, no prefix
+bind -n M-Left select-pane -L
+bind -n M-Right select-pane -R
+bind -n M-Up select-pane -U
+bind -n M-Down select-pane -D
+
+set -g mouse on
+set -g history-limit 50000
+set -g base-index 1
+setw -g pane-base-index 1
+
+# Truecolor
+set -g default-terminal "tmux-256color"
+set -as terminal-features ",xterm-ghostty:RGB"
+set -ga terminal-overrides ",*256col*:Tc"
+
+# Close pane / session without confirmation
+unbind x
+bind x kill-pane
+bind X kill-session
+
+# Minimal status bar, hostname on the right
+set -g status-style bg=default
+set -g status-left ""
+set -g status-right "#[fg=gray]#h"
+set -g window-status-style fg=gray
+set -g window-status-current-style fg=white,bold
+
+# Copy to the system clipboard through the terminal (OSC 52, works over SSH)
+set -g set-clipboard on
+
+set -g pane-border-style "fg=#45475a"
+set -g pane-active-border-style "fg=#45475a"

@@ -1,0 +1,10 @@
+# Reload: Cmd+Shift+, (macOS) / Ctrl+Shift+, (Linux)
+
+font-family = JetBrainsMono Nerd Font
+font-size = 13
+
+# List themes: ghostty +list-themes
+theme = GitHub Dark Default
+
+# Install Ghostty's terminfo on SSH hosts, fall back to xterm-256color
+shell-integration-features = ssh-env,ssh-terminfo

@@ -1,0 +1,20 @@
+# Identity (name, email per server) lives in config.local, not versioned
+[include]
+	path = config.local
+[user]
+	useConfigOnly = true
+[init]
+	defaultBranch = main
+[pull]
+	rebase = true
+[rebase]
+	autoStash = true
+[push]
+	autoSetupRemote = true
+[fetch]
+	prune = true
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true

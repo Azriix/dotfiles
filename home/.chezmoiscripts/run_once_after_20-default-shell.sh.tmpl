@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+# Make zsh the login shell (once per machine).
+set -euo pipefail
+
+zsh_path="$(command -v zsh)"
+{{ if eq .chezmoi.os "darwin" -}}
+current="$(dscl . -read "/Users/$USER" UserShell | awk '{print $2}')"
+{{- else -}}
+current="$(getent passwd "$USER" | cut -d: -f7)"
+{{- end }}
+
+if [[ "$(basename "$current")" != zsh ]]; then
+    echo "Default shell -> $zsh_path"
+    chsh -s "$zsh_path"
+fi

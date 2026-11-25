@@ -1,0 +1,8 @@
+# Secrets: never commit
+*.kdbx
+*.key
+id_*
+!id_*.pub
+local.zsh
+
+.DS_Store

@@ -1,0 +1,45 @@
+{{ if eq .chezmoi.os "darwin" -}}
+#!/usr/bin/env bash
+# Typora settings (macOS). Only these keys are written, never the whole plist
+# (it also holds window state and recent folders). Typora must be closed.
+set -euo pipefail
+
+if pgrep -xq Typora; then
+    echo "Typora is running: settings not applied. Quit it and run 'chezmoi apply'." >&2
+    exit 0
+fi
+
+d() { defaults write abnerworks.Typora "$@"; }
+
+# Theme files go in ~/Library/Application Support/abnerworks.Typora/themes (by hand)
+d theme -string "Github Dark"
+d useSeparateDarkTheme -bool false
+
+# Pasted images: copied to ./img next to the note, relative path
+d image_save_location -string "custom"
+d custom_image_save_location -string "./img"
+d use_relative_path_for_img -bool true
+d relativePathWithDot -bool false
+d apply_image_move_for_web -bool true
+d autoEscapeImageURL -bool true
+
+# Editing
+d strict_mode -bool true
+d defaultCodeLang -string "bash"
+d enable_highlight -bool true
+d enable_inline_math -bool false
+d copy_markdown_by_default -bool true
+d WebAutomaticDashSubstitutionEnabled -bool false
+d WebAutomaticQuoteSubstitutionEnabled -bool false
+
+# Sidebar and window
+d sidebar_tab -string "file-tree"
+d useTreeStyle -bool true
+d use_seamless_window -bool true
+d restoreWhenLaunch -string "3"
+
+# Confirmations
+d noHintForOpenLink -bool true
+d noWarnigForDeleteFile -bool true
+d noWarnigForMoveFile -bool true
+{{ end -}}

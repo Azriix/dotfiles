@@ -1,0 +1,7 @@
+{
+    "workbench.colorTheme": "GitHub Dark",
+    "editor.formatOnSave": true,
+    "explorer.confirmDelete": false,
+    "explorer.confirmDragAndDrop": false,
+    "security.workspace.trust.untrustedFiles": "open"
+}

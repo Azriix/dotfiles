@@ -1,0 +1,24 @@
+# Downloaded by chezmoi, not stored here. Refresh: chezmoi apply --refresh-externals
+
+{{- range list "zsh-autosuggestions" "zsh-syntax-highlighting" }}
+
+[".config/zsh/plugins/{{ . }}"]
+  type = "git-repo"
+  url = "https://github.com/zsh-users/{{ . }}.git"
+  refreshPeriod = "168h"
+  [".config/zsh/plugins/{{ . }}".clone]
+    args = ["--depth", "1"]
+  [".config/zsh/plugins/{{ . }}".pull]
+    args = ["--ff-only"]
+{{- end }}
+
+{{- if eq .chezmoi.os "linux" }}
+
+# On macOS the font comes from Homebrew
+[".local/share/fonts/JetBrainsMonoNerd"]
+  type = "archive"
+  url = "https://github.com/ryanoasis/nerd-fonts/releases/latest/download/JetBrainsMono.tar.xz"
+  exact = true
+  refreshPeriod = "720h"
+  include = ["*.ttf"]
+{{- end }}

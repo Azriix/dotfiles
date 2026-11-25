@@ -1,0 +1,35 @@
+# Packages to install. Editing this file re-runs the install on the next `chezmoi apply`.
+packages:
+  darwin:
+    brews:
+      - git
+      - git-lfs
+      - tmux
+      - starship
+      - eza
+      - bat
+      - duf
+      - uv
+      - nano  # macOS "nano" is actually pico
+    casks:
+      - ghostty
+      - secretive
+      - vscodium
+      - typora
+      - font-jetbrains-mono-nerd-font
+  linux:
+    apt:
+      - zsh
+      - git
+      - git-lfs
+      - tmux
+      - curl
+      - fontconfig
+      - eza
+      - bat
+      - duf
+    # Installed outside apt (missing or outdated there)
+    extra:
+      - starship
+      - uv
+      - ghostty

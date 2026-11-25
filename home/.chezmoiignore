@@ -1,0 +1,11 @@
+{{- /* Paths (in $HOME) chezmoi must NOT create on this machine */ -}}
+
+{{ if eq .chezmoi.os "darwin" -}}
+# macOS VSCodium reads ~/Library/Application Support (set by hand)
+.config/VSCodium
+{{ end -}}
+
+{{ if ne .chezmoi.os "linux" -}}
+# Default terminal through xdg-terminal-exec: Linux desktop only
+.config/xdg-terminals.list
+{{ end -}}
