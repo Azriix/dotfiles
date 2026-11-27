@@ -22,10 +22,29 @@ setopt auto_cd interactive_comments no_beep
 bindkey -e
 bindkey '^[[A' history-search-backward
 bindkey '^[[B' history-search-forward
+bindkey '^[[1;5D' backward-word      # Ctrl+Left
+bindkey '^[[1;5C' forward-word       # Ctrl+Right
+bindkey '^[[1;3D' backward-word      # Alt+Left
+bindkey '^[[1;3C' forward-word       # Alt+Right
+bindkey '^[[H'    beginning-of-line  # Home
+bindkey '^[[F'    end-of-line        # End
+bindkey '^[[3;5~' kill-word          # Ctrl+Delete
+bindkey '^[[Z'    reverse-menu-complete  # Shift+Tab
 
 # --- Completion ---------------------------------------------------------------
-autoload -Uz compinit && compinit -C -d "$XDG_CACHE_HOME/zsh/zcompdump"
+# Rebuild the dump once a day (picks up new completions), otherwise load it as is
+autoload -Uz compinit
+_zcomp="$XDG_CACHE_HOME/zsh/zcompdump"
+_stale=( $_zcomp(N.mh+24) )
+if [[ ! -f $_zcomp || -n $_stale ]]; then
+    compinit -d "$_zcomp"
+else
+    compinit -C -d "$_zcomp"
+fi
+unset _zcomp _stale
 zstyle ':completion:*' menu select
+zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
+setopt complete_in_word always_to_end
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
 
 # --- SSH agent ----------------------------------------------------------------
