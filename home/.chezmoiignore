@@ -3,6 +3,13 @@
 {{ if eq .chezmoi.os "darwin" -}}
 # macOS VSCodium reads ~/Library/Application Support (set by hand)
 .config/VSCodium
+# macOS Typora reads ~/Library/Application Support/abnerworks.Typora
+.config/Typora
+{{ end -}}
+
+{{ if ne .chezmoi.os "darwin" -}}
+# ~/Library: macOS only
+Library
 {{ end -}}
 
 {{ if ne .chezmoi.os "linux" -}}

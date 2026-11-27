@@ -22,3 +22,18 @@
   refreshPeriod = "720h"
   include = ["*.ttf"]
 {{- end }}
+
+# Typora theme "Github Dark" (MIT). CSS files only: the Open Sans fonts it uses are
+# already in Typora's built-in themes/github/ folder.
+{{- $typoraThemes := ".config/Typora/themes" }}
+{{- if eq .chezmoi.os "darwin" }}
+{{-   $typoraThemes = "Library/Application Support/abnerworks.Typora/themes" }}
+{{- end }}
+{{- range list "github-dark.css" "github/base.css" }}
+
+[{{ printf "%s/%s" $typoraThemes . | quote }}]
+  type = "archive-file"
+  url = "https://github.com/SprInec/typora-theme-github-dark/archive/refs/heads/main.tar.gz"
+  path = {{ printf "typora-theme-github-dark-main/%s" . | quote }}
+  refreshPeriod = "720h"
+{{- end }}

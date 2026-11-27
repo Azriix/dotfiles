@@ -55,6 +55,16 @@ if ! command -v ghostty >/dev/null; then
         /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/mkasberg/ghostty-ubuntu/HEAD/install.sh)"
     fi
 fi
+{{ else if eq . "typora" -}}
+if ! command -v typora >/dev/null; then
+    # Official apt repository (updates come with apt upgrade)
+    sudo mkdir -p /etc/apt/keyrings
+    curl -fsSL https://downloads.typora.io/typora.gpg | sudo tee /etc/apt/keyrings/typora.gpg >/dev/null
+    echo "deb [signed-by=/etc/apt/keyrings/typora.gpg] https://downloads.typora.io/linux ./" \
+        | sudo tee /etc/apt/sources.list.d/typora.list >/dev/null
+    sudo apt-get update -qq
+    sudo DEBIAN_FRONTEND=noninteractive apt-get install -y -qq typora
+fi
 {{ end -}}
 {{ end -}}
 {{ end -}}

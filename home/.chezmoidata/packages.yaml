@@ -33,3 +33,4 @@ packages:
       - starship
       - uv
       - ghostty
+      - typora

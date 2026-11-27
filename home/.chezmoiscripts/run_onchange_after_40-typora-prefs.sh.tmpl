@@ -1,45 +1,49 @@
-{{ if eq .chezmoi.os "darwin" -}}
+{{ if or (eq .chezmoi.os "darwin") (eq .chezmoi.os "linux") -}}
 #!/usr/bin/env bash
-# Typora settings (macOS). Only these keys are written, never the whole plist
-# (it also holds window state and recent folders). Typora must be closed.
+# Typora settings from .chezmoidata/typora.yaml. Only these keys are written, never
+# the whole profile (it also holds window state and recent folders). Typora must be closed.
 set -euo pipefail
 
-if pgrep -xq Typora; then
-    echo "Typora is running: settings not applied. Quit it and run 'chezmoi apply'." >&2
+if pgrep -x -i typora >/dev/null; then
+    echo "Typora is running: settings not applied. Quit it, then change .chezmoidata/typora.yaml or run this script by hand." >&2
     exit 0
 fi
 
-d() { defaults write abnerworks.Typora "$@"; }
+{{ $prefs := merge (dict) .typora.prefs.common (get .typora.prefs .chezmoi.os) -}}
+{{ if eq .chezmoi.os "darwin" -}}
+{{   range $key, $value := $prefs -}}
+{{     if kindIs "bool" $value -}}
+defaults write abnerworks.Typora {{ $key | quote }} -bool {{ $value }}
+{{     else if or (kindIs "int" $value) (kindIs "int64" $value) (kindIs "float64" $value) -}}
+defaults write abnerworks.Typora {{ $key | quote }} -int {{ $value }}
+{{     else -}}
+defaults write abnerworks.Typora {{ $key | quote }} -string {{ $value | quote }}
+{{     end -}}
+{{   end -}}
 
-# Theme files go in ~/Library/Application Support/abnerworks.Typora/themes (by hand)
-d theme -string "Github Dark"
-d useSeparateDarkTheme -bool false
+{{ else -}}
+# Linux: ~/.config/Typora/profile.data is hex-encoded JSON
+profile="${XDG_CONFIG_HOME:-$HOME/.config}/Typora/profile.data"
+mkdir -p "$(dirname "$profile")"
 
-# Pasted images: copied to ./img next to the note, relative path
-d image_save_location -string "custom"
-d custom_image_save_location -string "./img"
-d use_relative_path_for_img -bool true
-d relativePathWithDot -bool false
-d apply_image_move_for_web -bool true
-d autoEscapeImageURL -bool true
+python3 -I - "$profile" {{ $prefs | toJson | squote }} <<'EOF'
+import json, os, sys
 
-# Editing
-d strict_mode -bool true
-d defaultCodeLang -string "bash"
-d enable_highlight -bool true
-d enable_inline_math -bool false
-d copy_markdown_by_default -bool true
-d WebAutomaticDashSubstitutionEnabled -bool false
-d WebAutomaticQuoteSubstitutionEnabled -bool false
+path, prefs = sys.argv[1], json.loads(sys.argv[2])
 
-# Sidebar and window
-d sidebar_tab -string "file-tree"
-d useTreeStyle -bool true
-d use_seamless_window -bool true
-d restoreWhenLaunch -string "3"
+data = {}
+if os.path.exists(path):
+    with open(path) as f:
+        raw = f.read().strip()
+    if raw:
+        data = json.loads(bytes.fromhex(raw).decode("utf-8"))
 
-# Confirmations
-d noHintForOpenLink -bool true
-d noWarnigForDeleteFile -bool true
-d noWarnigForMoveFile -bool true
+data.update(prefs)
+
+tmp = path + ".tmp"
+with open(tmp, "w") as f:
+    f.write(json.dumps(data, ensure_ascii=False, separators=(",", ":")).encode("utf-8").hex())
+os.replace(tmp, path)
+EOF
+{{ end -}}
 {{ end -}}

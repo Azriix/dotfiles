@@ -1,0 +1,57 @@
+# Typora preferences, applied by .chezmoiscripts/run_onchange_after_40-typora-prefs.sh.tmpl
+# (macOS: `defaults write abnerworks.Typora`, Linux: merged into ~/.config/Typora/profile.data).
+# Only these keys are written; Typora keeps the rest. Key names come from Typora 1.14.
+typora:
+  prefs:
+    common:
+      # Theme: github-dark.css, downloaded by .chezmoiexternal.toml.tmpl
+      # (`theme` is per OS, see below)
+      useSeparateDarkTheme: false
+
+      # Pasted images: copied to ./img next to the note, written as ./img/x.png
+      image_save_location: "custom"
+      custom_image_save_location: "./img"
+      use_relative_path_for_img: true
+      relativePathWithDot: true
+      apply_image_move_for_web: true
+      autoEscapeImageURL: true
+
+      # Editing
+      strict_mode: true
+      defaultCodeLang: "bash"
+      enable_highlight: true
+      enable_inline_math: false
+      enable_diagram: true
+      enableAlert: true
+      show_line_numbers_for_fence: false
+      copy_markdown_by_default: true
+      smartDash: false
+      smartQuote: false
+      preferCRLF: false
+
+      # Saving
+      enableAutoSave: true
+      save_file_on_switch: true
+
+      # Sidebar and window
+      sidebar_tab: "file-tree"
+      useTreeStyle: true
+      restoreWhenLaunch: "3"
+
+      # Confirmations
+      noHintForOpenLink: true
+      noWarnigForDeleteFile: true
+      noWarnigForMoveFile: true
+
+      # Privacy
+      send_usage_info: false
+
+    # macOS stores the theme by display name, Linux by file name
+    darwin:
+      theme: "Github Dark"
+      use_seamless_window: true
+      WebAutomaticDashSubstitutionEnabled: false
+      WebAutomaticQuoteSubstitutionEnabled: false
+
+    linux:
+      theme: "github-dark.css"
